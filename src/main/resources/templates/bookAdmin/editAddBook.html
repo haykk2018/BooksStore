@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book Redactor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.15/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.15/dist/summernote.min.js"></script>
+</head>
+<body>
+<br>
+<div class="container">
+    <p>Ադմինի սկիզբ
+        <a th:href="@{main}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-home"></span></a>
+    </p><br>
+    <form th:action="@{save-book}" th:object="${book}" method="post">
+
+        <ul th:if="${#fields.hasAnyErrors()}" class="alert alert-danger" role="alert">
+            <li th:each="err : ${#fields.allErrors()}" th:text="${err}">...</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-6">
+                <input hidden type="text" th:field="*{id}"/>
+                <p>page description</p>    <input class="form-control" type="text" th:field="*{description}"/>
+                <p>page keywords</p>    <input class="form-control" type="text" th:field="*{keywords}"/>
+                <p>language id <span class="text-danger">*</span></p><input class="form-control" type="text"
+                                                                            th:field="*{langId}"
+                                                                            th:errorclass="fieldError"/>
+                <span th:if="${#fields.hasErrors('langId')}" th:errors="*{langId}" class="text-danger">Name Error</span>
+                <p>title</p> <input class="form-control" type="text" th:field="*{title}"/>
+                <p>author</p>
+                <!--                checkbox variant   -->
+                <!--                <div th:each="a : ${book.authors}">-->
+                <!--                    <input type="checkbox" th:id="${{a}}" th:value="${{a}}" th:field="*{authors}" />-->
+                <!--                    <label th:for="${{a}}" th:text="${a.name}">Cinema</label>-->
+                <!--                </div>-->
+                <select id="authors" th:field="*{authors}" size="3" multiple="multiple">
+                    <option th:each="a : ${authors}"
+                            th:value="${{a}}"
+                            th:text="${a.name}">
+                        authors
+                    </option>
+                </select>
+                <p>publisher</p>    <input class="form-control" type="text" th:field="*{publisher}"/>
+                <p>publishedYear</p>    <input class="form-control" type="text" th:field="*{publishedYear}"/>
+                <p>translator</p>    <input class="form-control" type="text" th:field="*{translator}"/>
+                <p>book description</p>    <input class="form-control" type="text" th:field="*{bookDescription}"/>
+                <p>note</p>    <input class="form-control" type="text" th:field="*{note}"/>
+                <!--                <p>Theme</p>    <input class="form-control" type="text" th:field="*{theme}"/>-->
+                <p>price</p>    <input class="form-control" type="text" th:field="*{price}" th:errorclass="fieldError"/>
+                <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger">Name Error</span>
+                <!--                img part start-->
+                <p>book image</p>
+                <input th:value="*{imgSrc}!= null ? *{imgSrc}:'/static/img/blankBook.jpg'" th:name="imgSrc" class="form-control" type="text" id="imgSrc"/>
+                <img th:src="@{*{imgSrc}!= null ? *{imgSrc}:'/static/img/blankBook.jpg'}" class="img-rounded" th:alt="*{title}" id="bookImg"/>
+                <!--                img part end-->
+                <p>visibility</p>
+                <!-- Bootstrap  thymeleaf checkbox-->
+                <label>
+                    <input type="checkbox" th:field="*{hidden}"/> hidden
+                </label>
+                <!--   thymeleaf checkbox-->
+                <!--                <input class="form-control" type="checkbox" th:field="*{hidden}" />-->
+                <!--                <label th:for="${#ids.prev('hidden')}">hidden</label>-->
+            </div>
+            <div class="col-md-6">
+                <div style="float: right">
+                    <p>էջի լեզուն <span class="text-danger">*</span></p>
+                    <select th:field="*{lang}" id="lang">
+                        <option value=""> --</option>
+                        <option th:each="ln : ${T(com.card.website.domain.Page.Lang).values()}"
+                                th:value="${ln}" th:utext="${ln}"/>
+                    </select>
+                    <span class="text-danger" th:if="${#fields.hasErrors('lang')}" th:errors="*{lang}">Name Error</span>
+                </div>
+            </div>
+        </div>
+        <p><input class="btn btn-primary" type="submit" value="Submit"/> <input class="btn btn-primary" type="reset"
+                                                                                value="Reset"/></p>
+    </form>
+</div>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        //img scripts
+        $("#imgSrc").change(function (){
+            let src = $("#imgSrc").val();
+            $("#bookImg").attr("src",src);
+        });
+    })
+</script>
+</body>
+</html>

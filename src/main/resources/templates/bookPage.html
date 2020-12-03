@@ -45,8 +45,9 @@
 <!--container-->
 <th:block th:utext="${curBook?.bookDescription}">
 </th:block>
+<img th:src="@{${curBook?.imgSrc}!= null ? ${curBook?.imgSrc}:'/static/img/blankBook.jpg'}" class="img-rounded" th:alt="*{curBook?.title}" id="bookImg"/>
 <!--<div th:utext="${book?.content}" class="container text-center"></div>-->
-<!--End container-->
+End container
 <br>
 <footer class="container-fluid text-center">
     <p>Footer Text</p>

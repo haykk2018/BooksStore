@@ -27,7 +27,7 @@
     <!-- view pages by lang -->
     <select class="custom-select" id="lang" multiple>
         <option selected value="all">Բոլոր լեզուներով հոդվածները</option>
-        <option th:each="ln : ${T(com.card.website.domain.Page.Lang).values()}" th:text="#{lang.__${ln}__}"
+        <option th:each="ln : ${T(com.company.bookstore.domain.Page.Lang).values()}" th:text="#{lang.__${ln}__}"
                 th:value="${ln}"></option>
     </select>
     <!-- end view pages by lang -->

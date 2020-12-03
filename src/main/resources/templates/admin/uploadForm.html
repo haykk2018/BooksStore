@@ -8,29 +8,37 @@
 </head>
 <body>
 <div class="container">
-<p>Ադմինի սկիզբ
-    <a th:href="@{main}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-home"></span></a>
-</p>
-<div th:if="${message}">
-    <h2 th:text="${message}"/>
-</div>
-<br>
-<div>
-    <form method="POST" enctype="multipart/form-data" th:action="@{upload}">
-        <table>
-            <tr><td>File to upload:</td><td><input type="file" name="file" class="custom-file-input"  /></td></tr>
-            <tr><td></td><td><br><input type="submit" value="Upload"  class="btn"/></td></tr>
-        </table>
-    </form>
-</div>
-<div>
-    <ul>
-        <li th:each="file : ${files}">
-            <a th:href="${file}" th:text="${file}" />
-            <img th:if="${file.contains('.jpg')||file.contains('.png')||file.contains('.gif')||file.contains('.ico')||file.contains('.jpeg')}" th:src="${file}" width="42" height="42">
-        </li>
-    </ul>
-</div>
+    <br>
+    <p>Ադմինի սկիզբ
+        <a th:href="@{main}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-home"></span></a>
+    </p>
+    <div th:if="${message}">
+        <h2 th:text="${message}"/>
+    </div>
+    <br>
+    <div>
+        <form method="POST" enctype="multipart/form-data" th:action="@{upload}">
+            <table>
+                <tr>
+                    <td>File to upload:</td>
+                    <td><input type="file" name="file" class="custom-file-input"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><br><input type="submit" value="Upload" class="btn"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div>
+        <ul>
+            <li th:each="file : ${files}">
+                <a th:href="${file}" th:text="${file}"/>
+                <img th:if="${file.contains('.jpg')||file.contains('.png')||file.contains('.gif')||file.contains('.ico')||file.contains('.jpeg')}"
+                     th:src="${file}" width="42" height="42">
+            </li>
+        </ul>
+    </div>
 </div>
 </body>
 </html>

@@ -35,7 +35,7 @@
             <!--            End menu part-->
             <!--            Lang and login part-->
             <ul class="nav navbar-nav navbar-right">
-                <li th:each="ln : ${T(com.card.website.domain.Page.Lang).values()}" th:unless="${ln == curPage?.lang}">
+                <li th:each="ln : ${T(com.company.bookstore.domain.Page.Lang).values()}" th:unless="${ln == curPage?.lang}">
                     <a th:href="@{/(id=${curPage?.langId},lang=${ln})}">[[#{lang.__${ln}__}]]</a>
                 </li>
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

@@ -59,7 +59,7 @@
                     <p>էջի լեզուն <span class="text-danger">*</span></p>
                     <select th:field="*{lang}" id="lang">
                         <option value=""> --</option>
-                        <option th:each="ln : ${T(com.card.website.domain.Page.Lang).values()}"
+                        <option th:each="ln : ${T(com.company.bookstore.domain.Page.Lang).values()}"
                                 th:value="${ln}" th:utext="${ln}"/>
                     </select>
                     <span class="text-danger" th:if="${#fields.hasErrors('lang')}" th:errors="*{lang}">Name Error</span>
@@ -69,9 +69,9 @@
 
                     <!--            if pages isn"t exist we in new page mode. so we don,t need menu sequence-->
                     <div id="menuSequenceData">
-                        <th:block th:if="${#lists.isEmpty(pages)}">
-                            <input class="form-control" type="number" id="menuSequence" name="menuSequence" th:value="1" hidden/>
-                        </th:block>
+<!--                        <th:block th:if="${#lists.isEmpty(pages)}">-->
+<!--                            <input class="form-control" type="number" id="menuSequence" name="menuSequence" th:value="1" hidden/>-->
+<!--                        </th:block>-->
                         <th:block th:unless="${#lists.isEmpty(pages)}">
                             <p>Մենյուի դիրքը</p>
                             <select class="custom-select" th:field="*{menuSequence}" multiple>

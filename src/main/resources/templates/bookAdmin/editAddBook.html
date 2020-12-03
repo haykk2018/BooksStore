@@ -65,13 +65,17 @@
                 <!--   thymeleaf checkbox-->
                 <!--                <input class="form-control" type="checkbox" th:field="*{hidden}" />-->
                 <!--                <label th:for="${#ids.prev('hidden')}">hidden</label>-->
+                <br>
+                <div class="col-md-4 col-md-offset-4">
+                    <a class="btn btn-primary" th:href="@{/adminpanel/upload}">Բեռնել ֆայլ</a>
+                </div>
             </div>
             <div class="col-md-6">
                 <div style="float: right">
                     <p>էջի լեզուն <span class="text-danger">*</span></p>
                     <select th:field="*{lang}" id="lang">
                         <option value=""> --</option>
-                        <option th:each="ln : ${T(com.card.website.domain.Page.Lang).values()}"
+                        <option th:each="ln : ${T(com.company.bookstore.domain.Book.Lang).values()}"
                                 th:value="${ln}" th:utext="${ln}"/>
                     </select>
                     <span class="text-danger" th:if="${#fields.hasErrors('lang')}" th:errors="*{lang}">Name Error</span>

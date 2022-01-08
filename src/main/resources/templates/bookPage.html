@@ -45,9 +45,14 @@
 <!--container-->
 <th:block th:utext="${curBook?.bookDescription}">
 </th:block>
+<div th:utext="${curBook?.title}" class="container text-center"></div>
+<div th:utext="${curBook?.bookDescription}" class="container text-center"></div>
 <img th:src="@{${curBook?.imgSrc}!= null ? ${curBook?.imgSrc}:'/static/img/blankBook.jpg'}" class="img-rounded" th:alt="*{curBook?.title}" id="bookImg"/>
-<!--<div th:utext="${book?.content}" class="container text-center"></div>-->
-End container
+<div th:utext="${'price: ' + curBook?.price}" class="container text-center"></div>
+<div th:utext="${curBook?.publishedYear}" class="container text-center"></div>
+<div th:utext="${curBook?.publisher}" class="container text-center"></div>
+<div th:utext="${curBook?.rate}" class="container text-center"></div>
+<!--End container-->
 <br>
 <footer class="container-fluid text-center">
     <p>Footer Text</p>

@@ -1,6 +1,6 @@
 package com.company.bookstore.controller;
 
-import com.company.bookstore.domain.Page;
+import com.company.bookstore.domain.ContentPage;
 import com.company.bookstore.repository.PageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -26,7 +26,7 @@ public class AdminController {
     //      admin panel first page
     @GetMapping(path = "/main")
     public String mainAdmin(Map<String, Object> model) {
-        Iterable<Page> pages = pageRepository.findAll();
+        Iterable<ContentPage> pages = pageRepository.findAll();
 
         model.put("pages", pages);
 
@@ -35,7 +35,7 @@ public class AdminController {
 
     //      add new page
     @PostMapping(path = "/add-page")
-    public String pageAdd(@Valid Page page, BindingResult bindingResult) {
+    public String pageAdd(@Valid ContentPage page, BindingResult bindingResult) {
 
         //validating unique filds
         //if we check it when pages create, is'nt necessity to check it by edit
@@ -54,7 +54,7 @@ public class AdminController {
         //if menu sequence isn't changed we dun't push the sequence։ two case
         //1 create new page, when isn't exist page with current menu sequence in database
         //2 edit page, when page menu sequence remains the same
-        Page pageWhichPlaceWillToSave = pageRepository.findByLangAndMenuSequence(page.getLang(), page.getMenuSequence());
+        ContentPage pageWhichPlaceWillToSave = pageRepository.findByLangAndMenuSequence(page.getLang(), page.getMenuSequence());
 
 
         if (page.getId() == null && pageWhichPlaceWillToSave != null) {
@@ -62,7 +62,7 @@ public class AdminController {
             menuSequenceDisposer(page, null);
         }
         else if (page.getId() != null && (pageWhichPlaceWillToSave == null || (pageWhichPlaceWillToSave != null && pageWhichPlaceWillToSave.getId() != page.getId()))) {
-            Page oldPage = pageRepository.findById(page.getId()).get();
+            ContentPage oldPage = pageRepository.findById(page.getId()).get();
             menuSequenceDisposer(page, oldPage.getMenuSequence());
         }
 
@@ -70,7 +70,7 @@ public class AdminController {
         return "redirect:/adminpanel/main";
     }
 
-    void menuSequenceDisposer(Page page, Integer oldPageMenuSequence) {
+    void menuSequenceDisposer(ContentPage page, Integer oldPageMenuSequence) {
         //when we add new page we need only to push +1
         if (oldPageMenuSequence == null) {
             pageRepository.pushSequenceOneStep(page.getMenuSequence(), page.getLang());
@@ -95,7 +95,7 @@ public class AdminController {
     @GetMapping(path = "/new-page")
     public String pageAddEdit(@RequestParam(name = "id", required = false) Integer id, Map<String, Object> model) {
 
-        Page page;
+        ContentPage page;
 
         if (id != null) {
             // if id nul its doing edit
@@ -103,11 +103,11 @@ public class AdminController {
 
         } else {
             // if isn't  nul its doing new
-            page = new Page();
+            page = new ContentPage();
         }
         model.put("page", page);
         // pages need for menu sequence
-        Iterable<Page> pages = pageRepository.findByLang(page.getLang(), Sort.by("menuSequence").ascending());
+        Iterable<ContentPage> pages = pageRepository.findByLang(page.getLang(), Sort.by("menuSequence").ascending());
         model.put("pages", pages);
 
         return "admin/editAddPage";
@@ -117,12 +117,12 @@ public class AdminController {
     @GetMapping(path = "/get-pages")
     public String getPagesByLang(@RequestParam String lang, Map<String, Object> model) {
 
-        Iterable<Page> pages;
+        Iterable<ContentPage> pages;
 
         if (lang.equals("all")) {
             pages = pageRepository.findAll();
         } else {
-            pages = pageRepository.findByLang(Page.Lang.valueOf(lang), Sort.by("menuSequence").ascending());
+            pages = pageRepository.findByLang(ContentPage.Lang.valueOf(lang), Sort.by("menuSequence").ascending());
         }
 
         model.put("pages", pages);
@@ -133,7 +133,7 @@ public class AdminController {
     @GetMapping(path = "/get-sequence")
     public String getSequencesByLang(@RequestParam String lang, @RequestParam(name = "msequence", required = false) Integer msequence, Map<String, Object> model) {
 
-        Iterable<Page> pages = pageRepository.findByLangAndHiddenIsFalse(Page.Lang.valueOf(lang), Sort.by("menuSequence").ascending());
+        Iterable<ContentPage> pages = pageRepository.findByLangAndHiddenIsFalse(ContentPage.Lang.valueOf(lang), Sort.by("menuSequence").ascending());
 
         model.put("currentMenuSequence", msequence);
         model.put("pages", pages);

@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity // This tells Hibernate to make a table out of this class
-public class Page {
+public class ContentPage {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

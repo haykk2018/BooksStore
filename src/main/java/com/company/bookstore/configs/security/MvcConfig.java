@@ -31,6 +31,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
+//        registry.addViewController("/book").setViewName("book");
     }
     // path for show the files without the login, you must add it from security config too
     @Override

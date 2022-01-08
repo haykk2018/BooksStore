@@ -1,6 +1,6 @@
 package com.company.bookstore.repository;
 
-import com.company.bookstore.domain.Page;
+import com.company.bookstore.domain.ContentPage;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,33 +13,33 @@ import java.util.List;
 // CRUD refers Create, Read, Update, Delete
 
 @Transactional // it(@Transactional) put to works normal, without it give "Unable to access lob stream" error
-public interface PageRepository extends CrudRepository<Page, Integer> {
+public interface PageRepository extends CrudRepository<ContentPage, Integer> {
 
-    List<Page> findByLang(Page.Lang lang, Sort sort);
+    List<ContentPage> findByLang(ContentPage.Lang lang, Sort sort);
 
-    List<Page> findByLangAndHiddenIsFalse(Page.Lang lang, Sort sort);
+    List<ContentPage> findByLangAndHiddenIsFalse(ContentPage.Lang lang, Sort sort);
 
-    Page findByLangAndLangId(Page.Lang lang, Integer langId);
+    ContentPage findByLangAndLangId(ContentPage.Lang lang, Integer langId);
 
-    Page findByLangAndMenuSequence(Page.Lang lang, Integer menuSequence);
+    ContentPage findByLangAndMenuSequence(ContentPage.Lang lang, Integer menuSequence);
 
-    boolean existsByLangAndLangId(Page.Lang lang, Integer langId);
+    boolean existsByLangAndLangId(ContentPage.Lang lang, Integer langId);
 
     // when old Sequence great then current => pushing + 1
     @Modifying
-    @Query("update Page p SET p.menuSequence = p.menuSequence+1 WHERE p.menuSequence >=?1 AND p.lang = ?2")
-    int pushSequenceOneStep(int mSequence, Page.Lang lang);
+    @Query("update ContentPage p SET p.menuSequence = p.menuSequence+1 WHERE p.menuSequence >=?1 AND p.lang = ?2")
+    int pushSequenceOneStep(int mSequence, ContentPage.Lang lang);
 
     @Modifying
-    @Query("update Page p SET p.menuSequence = p.menuSequence+1 WHERE p.menuSequence >=?1 AND p.menuSequence < ?2  AND p.lang = ?3")
-    int pushSequenceOneStep(int mSequence, int oldSequence, Page.Lang lang);
+    @Query("update ContentPage p SET p.menuSequence = p.menuSequence+1 WHERE p.menuSequence >=?1 AND p.menuSequence < ?2  AND p.lang = ?3")
+    int pushSequenceOneStep(int mSequence, int oldSequence, ContentPage.Lang lang);
 
     // when old Sequence less then current => pushing - 1
     @Modifying
-    @Query("update Page p SET p.menuSequence = p.menuSequence-1 WHERE p.menuSequence <=?1 AND p.lang = ?2")
-    int pushSequenceOneStepToBack(int mSequence, Page.Lang lang);
+    @Query("update ContentPage p SET p.menuSequence = p.menuSequence-1 WHERE p.menuSequence <=?1 AND p.lang = ?2")
+    int pushSequenceOneStepToBack(int mSequence, ContentPage.Lang lang);
 
     @Modifying
-    @Query("update Page p SET p.menuSequence = p.menuSequence-1 WHERE p.menuSequence < ?1 AND p.menuSequence > ?2  AND p.lang = ?3")
-    int pushSequenceOneStepToBack(int mSequence, int oldSequence, Page.Lang lang);
+    @Query("update ContentPage p SET p.menuSequence = p.menuSequence-1 WHERE p.menuSequence < ?1 AND p.menuSequence > ?2  AND p.lang = ?3")
+    int pushSequenceOneStepToBack(int mSequence, int oldSequence, ContentPage.Lang lang);
 }

@@ -66,10 +66,55 @@ public class AdminBookController {
 
     //      delete book
     @GetMapping(path = "/delete-book")
-    public String pageDelete(@RequestParam Integer id) {
+    public String bookDelete(@RequestParam Integer id) {
 
         bookRepository.deleteById(id);
         return "redirect:/book-panel/main";
+    }
+
+    @GetMapping(path = "/authors")
+    public String bookAuthorsAdmin(Map<String, Object> model) {
+
+        Iterable<Author> authors = authorRepository.findAll();
+
+        model.put("authors", authors);
+
+        return "bookAdmin/authors";
+    }
+
+    @GetMapping(path = "/editAddAuthor")
+    public String authorAddEdit(@RequestParam(name = "id", required = false) Integer id, Map<String, Object> model) {
+
+        Author author;
+        if (id == null) {
+            author = new Author();
+        } else {
+            author = authorRepository.findById(id).get();
+        }
+
+        model.put("author", author);
+
+        return "bookAdmin/editAddAuthor";
+    }
+
+    //      add new page
+    @PostMapping(path = "/save-author")
+    public String authorSave(@Valid Author author, BindingResult bindingResult) {
+
+        //validating unique filds
+        if (bindingResult.hasErrors()) {
+            return "bookAuthor/editAddAuthor";
+        }
+        authorRepository.save(author);
+        return "redirect:/book-panel/authors";
+    }
+
+    //      delete book
+    @GetMapping(path = "/delete-author")
+    public String authorDelete(@RequestParam Integer id) {
+
+        authorRepository.deleteById(id);
+        return "redirect:/book-panel/authors";
     }
 
 }

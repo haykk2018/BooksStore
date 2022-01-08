@@ -1,6 +1,7 @@
 package com.company.bookstore.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +18,20 @@ public class Author {
     private String name;
 
     private String description;
+
+    @NotNull
+    private Book.Lang lang;
+
+    public enum Lang {
+        arm, rus, eng;
+    }
+    public Book.Lang getLang() {
+        return lang;
+    }
+
+    public void setLang(Book.Lang lang) {
+        this.lang = lang;
+    }
 
     public Integer getId() {
         return id;

@@ -7,4 +7,6 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
 
     Book findByLangAndLangId(Book.Lang lang, Integer langId);
 
+    boolean existsByLangAndLangId(Book.Lang lang, Integer langId);
+
 }

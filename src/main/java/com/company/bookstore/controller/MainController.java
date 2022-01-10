@@ -48,9 +48,6 @@ public class MainController {
         Book curBook = bookRepository.findByLangAndLangId(Book.Lang.valueOf(locale.getLanguage()), id);
 
         model.put("curBook", curBook);
-//        model.put("pages", pages);
-
-
         return "bookPage";
     }
 

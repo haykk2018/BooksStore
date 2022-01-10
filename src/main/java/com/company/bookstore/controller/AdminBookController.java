@@ -55,8 +55,11 @@ public class AdminBookController {
     //      add new page
     @PostMapping(path = "/save-book")
     public String bookSave(@Valid Book book, BindingResult bindingResult) {
-
         //validating unique filds
+        if (book.getId() == null && bookRepository.existsByLangAndLangId(book.getLang(), book.getLangId())) {
+            bindingResult.rejectValue("langId", "messageCode", "The field must be unique. Page with your value already exist ");
+        }
+
         if (bindingResult.hasErrors()) {
             return "bookAdmin/editAddBook";
         }

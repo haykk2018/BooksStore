@@ -22,7 +22,7 @@
     <p>Ադմինի սկիզբ
         <a th:href="@{main}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-home"></span></a>
     </p><br>
-    <form th:action="@{add-page}" th:object="${page}" method="post">
+    <form th:action="@{add-page}" th:object="${contentPage}" method="post">
 
         <ul th:if="${#fields.hasAnyErrors()}" class="alert alert-danger" role="alert">
             <li th:each="err : ${#fields.allErrors()}" th:text="${err}">...</li>
@@ -101,8 +101,8 @@
             var msequence = "";
             // when selected lang is different from current edited page lang > then current menu sequence have noting on other languages sequence
             [# th:unless="${pages==null}"]
-            if (selectedLang == '[[${page.lang}]]') {
-                msequence = [[${page.menuSequence}]];
+            if (selectedLang == '[[${contentPage.lang}]]') {
+                msequence = [[${contentPage.menuSequence}]];
             }
             [/]
            $('#menuSequenceData').load(home_url + '/adminpanel/get-sequence?lang=' + selectedLang + '&msequence='+msequence); // url

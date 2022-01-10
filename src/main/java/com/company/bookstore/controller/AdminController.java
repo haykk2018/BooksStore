@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -35,38 +32,39 @@ public class AdminController {
 
     //      add new page
     @PostMapping(path = "/add-page")
-    public String pageAdd(@Valid ContentPage page, BindingResult bindingResult) {
+    public String pageAdd(@Valid ContentPage contentPage, BindingResult bindingResult) {
 
         //validating unique filds
-        //if we check it when pages create, is'nt necessity to check it by edit
-        if (page.getId() == null && pageRepository.existsByLangAndLangId(page.getLang(), page.getLangId())) {
+        //if we check it when pages create, isn't necessity to check it by edit
+        if (contentPage.getId() == null && pageRepository.existsByLangAndLangId(contentPage.getLang(), contentPage.getLangId())) {
             bindingResult.rejectValue("langId", "messageCode", "The field must be unique. Page with your value already exist ");
+        }
+        if (contentPage.getBeginDate() == null) {
+            contentPage.setBeginDate(new Date());
+        } else {
+            contentPage.setEditDate(new Date());
         }
         if (bindingResult.hasErrors()) {
             return "admin/editAddPage";
         }
-        // time automatic set if isn"t sent, they aren't important operations
-        if (page.getBeginDate() == null) {
-            page.setBeginDate(new Date());
-        } else {
-            page.setEditDate(new Date());
-        }
-        //if menu sequence isn't changed we dun't push the sequence։ two case
+        // time automatic set if isn't sent, they aren't important operations
+
+        //if menu sequence isn't changed we don't push the sequence։ two case
         //1 create new page, when isn't exist page with current menu sequence in database
         //2 edit page, when page menu sequence remains the same
-        ContentPage pageWhichPlaceWillToSave = pageRepository.findByLangAndMenuSequence(page.getLang(), page.getMenuSequence());
+        ContentPage pageWhichPlaceWillToSave = pageRepository.findByLangAndMenuSequence(contentPage.getLang(), contentPage.getMenuSequence());
 
 
-        if (page.getId() == null && pageWhichPlaceWillToSave != null) {
-            //in this case we add new page, and isn,t exist old page, and us didn't need old page
-            menuSequenceDisposer(page, null);
+        if (contentPage.getId() == null && pageWhichPlaceWillToSave != null) {
+            //in this case we add new page, and isn't exist old page, and us didn't need old page
+            menuSequenceDisposer(contentPage, null);
         }
-        else if (page.getId() != null && (pageWhichPlaceWillToSave == null || (pageWhichPlaceWillToSave != null && pageWhichPlaceWillToSave.getId() != page.getId()))) {
-            ContentPage oldPage = pageRepository.findById(page.getId()).get();
-            menuSequenceDisposer(page, oldPage.getMenuSequence());
+        else if (contentPage.getId() != null && (pageWhichPlaceWillToSave == null || (pageWhichPlaceWillToSave != null && pageWhichPlaceWillToSave.getId() != contentPage.getId()))) {
+            ContentPage oldPage = pageRepository.findById(contentPage.getId()).get();
+            menuSequenceDisposer(contentPage, oldPage.getMenuSequence());
         }
 
-        pageRepository.save(page);
+        pageRepository.save(contentPage);
         return "redirect:/adminpanel/main";
     }
 
@@ -95,19 +93,19 @@ public class AdminController {
     @GetMapping(path = "/new-page")
     public String pageAddEdit(@RequestParam(name = "id", required = false) Integer id, Map<String, Object> model) {
 
-        ContentPage page;
+        ContentPage contentPage;
 
         if (id != null) {
             // if id nul its doing edit
-            page = pageRepository.findById(id).get();
+            contentPage = pageRepository.findById(id).get();
 
         } else {
             // if isn't  nul its doing new
-            page = new ContentPage();
+            contentPage = new ContentPage();
         }
-        model.put("page", page);
+        model.put("contentPage", contentPage);
         // pages need for menu sequence
-        Iterable<ContentPage> pages = pageRepository.findByLang(page.getLang(), Sort.by("menuSequence").ascending());
+        Iterable<ContentPage> pages = pageRepository.findByLang(contentPage.getLang(), Sort.by("menuSequence").ascending());
         model.put("pages", pages);
 
         return "admin/editAddPage";

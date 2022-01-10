@@ -7,9 +7,9 @@ import com.company.bookstore.repository.PageRepository;
 import com.company.bookstore.repository.PagingBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,10 +50,12 @@ public class MainController {
         model.put("curBook", curBook);
         return "bookPage";
     }
-
+//  by  https://www.kindsonthegenius.com/how-to-implement-pagination-in-spring-boot-with-thymeleaf/ article
     @GetMapping(path = "/books")
-    public String books(Map<String, Object> model, @PageableDefault Pageable pageable) {
+    public String books(@RequestParam(name = "page", defaultValue = "1") Integer id, Map<String, Object> model) {
 
+
+        Pageable pageable = PageRequest.of(id - 1,5);
         Page<Book> books = pagingBookRepository.findAll(pageable);
 
         model.put("books", books);

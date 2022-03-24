@@ -1,6 +1,6 @@
 package com.company.bookstore.domain;
 
-import org.hibernate.validator.constraints.Range;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -46,10 +46,8 @@ public class Book {
 
     private String imgSrc;
 
-    @Range(min = 1, max = 999999)
     private Integer price;
 
-    @Range(min = 2, max = 2099)
     private Integer publishedYear;
 
     private String bookDescription;
@@ -61,7 +59,7 @@ public class Book {
     private Integer langId;
 
     public enum Lang {
-        arm, rus, eng;
+        arm, rus, eng
     }
     public Lang getLang() {
         return lang;

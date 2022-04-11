@@ -21,8 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/user-panel/registration").permitAll()
-                .antMatchers("/", "/name", "/book", "/books", "/static/**", "/webjars/**", "/files/**").permitAll()
+                .antMatchers("/", "/name", "/book", "/books", "/static/**", "/webjars/**", "/files/**","/user-panel/registration").permitAll()
                 .antMatchers("/adminpanel/**", "/book-panel/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
                 .antMatchers("/user-panel/**").hasAnyAuthority("SUPER_ADMIN")
                 .anyRequest().authenticated()
@@ -31,13 +30,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().permitAll()
                 .and()
-                .exceptionHandling().accessDeniedPage("/403");
+                .logout().permitAll();
     }
 
-/*  @Bean
+    @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build();
+        UserDetails user =
+                User.withDefaultPasswordEncoder()
+                        .username("user")
+                        .password("password")
+                        .roles("USER")
+                        .build();
+
         return new InMemoryUserDetailsManager(user);
     }*/
 

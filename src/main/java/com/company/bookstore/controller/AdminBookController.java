@@ -52,7 +52,7 @@ public class AdminBookController {
         return "bookAdmin/editAddBook";
     }
 
-    //      add new page
+    //      add edit page
     @PostMapping(path = "/save-book")
     public String bookSave(@Valid Book book, BindingResult bindingResult) {
         //validating unique filds

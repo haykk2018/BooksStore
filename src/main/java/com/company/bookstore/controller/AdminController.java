@@ -29,8 +29,28 @@ public class AdminController {
 
         return "admin/main";
     }
-
     //      add new page
+    @GetMapping(path = "/new-page")
+    public String pageAddEdit(@RequestParam(name = "id", required = false) Integer id, Map<String, Object> model) {
+
+        ContentPage contentPage;
+
+        if (id != null) {
+            // if id nul its doing edit
+            contentPage = pageRepository.findById(id).get();
+
+        } else {
+            // if isn't  nul its doing new
+            contentPage = new ContentPage();
+        }
+        model.put("contentPage", contentPage);
+        // pages need for menu sequence
+        Iterable<ContentPage> pages = pageRepository.findByLang(contentPage.getLang(), Sort.by("menuSequence").ascending());
+        model.put("pages", pages);
+
+        return "admin/editAddPage";
+    }
+
     @PostMapping(path = "/add-page")
     public String pageAdd(@Valid ContentPage contentPage, BindingResult bindingResult) {
 
@@ -88,27 +108,6 @@ public class AdminController {
 
         pageRepository.deleteById(id);
         return "redirect:/adminpanel/main";
-    }
-
-    @GetMapping(path = "/new-page")
-    public String pageAddEdit(@RequestParam(name = "id", required = false) Integer id, Map<String, Object> model) {
-
-        ContentPage contentPage;
-
-        if (id != null) {
-            // if id nul its doing edit
-            contentPage = pageRepository.findById(id).get();
-
-        } else {
-            // if isn't  nul its doing new
-            contentPage = new ContentPage();
-        }
-        model.put("contentPage", contentPage);
-        // pages need for menu sequence
-        Iterable<ContentPage> pages = pageRepository.findByLang(contentPage.getLang(), Sort.by("menuSequence").ascending());
-        model.put("pages", pages);
-
-        return "admin/editAddPage";
     }
 
     // ajax request from admin main page

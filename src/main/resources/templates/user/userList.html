@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>BookStore</title>
+    <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">User List</h1>
+
+    <div id="booksDiv">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Role</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${users.empty}">
+                <td colspan="2"> No Users Available</td>
+            </tr>
+            <tr th:each="user, i : ${users}">
+                <td><span th:text="${i.index +1}"> nom </span></td>
+                <td><span th:text="${user.username}"> username </span></td>
+
+                <td>
+                    <ul>
+                        <li th:each="r : ${user.roles}"
+                            th:text="${r.name()}">
+                        </li>
+                    </ul>
+                </td>
+                <td><a href="#" th:href="@{/user(id=${user.id})}"><span
+                        class="glyphicon glyphicon-eye-open"> </span></a></td>
+                <td><a href="#" th:href="@{editAddUser(id=${user.id})}"><span
+                        class="glyphicon glyphicon-pencil"></span></a>
+                </td>
+                <td><a onclick="return confirm('Are you sure delete book?')"
+                       th:href="@{delete-user(id=${user.id})}"><span
+                        class="glyphicon glyphicon-remove-circle"></span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" href="#" th:href="@{editAddUser}">Նոր օգտատտերի ներմուծում</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

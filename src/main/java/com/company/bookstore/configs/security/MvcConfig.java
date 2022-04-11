@@ -22,46 +22,49 @@ import java.util.Locale;
 @EnableConfigurationProperties(StorageProperties.class)
 public class MvcConfig implements WebMvcConfigurer {
 
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+            "classpath:/static/upload", "classpath:/static/js", "classpath:/static/socket-client", "/webjars/socket-client",
+            "classpath:/static/img", "classpath:/static/css", "/webjars/bootstrap", "/webjars/jquery", "/webjars/sockjs-client"};
     @Value("${upload.path}")
     private String uploadPath;
-
-    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-            "classpath:/static/upload","classpath:/static/js","classpath:/static/socket-client","/webjars/socket-client",
-            "classpath:/static/img","classpath:/static/css","/webjars/bootstrap","/webjars/jquery","/webjars/sockjs-client" };
 
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
 //        registry.addViewController("/book").setViewName("book");
     }
+
     // path for show the files without the login, you must add it from security config too
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry){
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
         registry.addResourceHandler("/webjars/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
 //        didn't work until some times - I didn't understand why, and I changed it with below and added @Value("${upload.path}") from the top
 //        registry.addResourceHandler("/**")
 //                .addResourceLocations("file://" + new StorageProperties().getLocation() + "/");
         registry.addResourceHandler("/**")
-                .addResourceLocations("file://"  + uploadPath + "/");
+                .addResourceLocations("file://" + uploadPath + "/");
     }
 
-//    internationalization https://www.javadevjournal.com/spring-boot/spring-boot-internationalization/
+    //    internationalization https://www.javadevjournal.com/spring-boot/spring-boot-internationalization/
     @Override
-    public void addInterceptors(InterceptorRegistry registry){
+    public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
     }
+
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         return localeChangeInterceptor;
     }
+
     @Bean
-    public LocaleResolver localeResolver(){
+    public LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         localeResolver.setDefaultLocale(new Locale("eng"));
-        return  localeResolver;
+        return localeResolver;
     }
+
     //upload config
     @Bean
     CommandLineRunner init(StorageService storageService) {

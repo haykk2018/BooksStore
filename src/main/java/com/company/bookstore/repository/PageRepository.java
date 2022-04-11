@@ -12,7 +12,7 @@ import java.util.List;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
-@Transactional // it(@Transactional) put to works normal, without it give "Unable to access lob stream" error
+@Transactional // it(@Transactional) puts to work normal, without it give "Unable to access lob stream" error
 public interface PageRepository extends CrudRepository<ContentPage, Integer> {
 
     List<ContentPage> findByLang(ContentPage.Lang lang, Sort sort);

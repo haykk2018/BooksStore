@@ -3,6 +3,7 @@ package com.company.bookstore.domain;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -13,6 +14,7 @@ public class ContentPage {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @NotEmpty
     private String title;
 
     @Size(min = 2, max = 30)

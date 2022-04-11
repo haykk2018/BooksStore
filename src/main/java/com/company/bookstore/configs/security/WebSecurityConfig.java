@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().permitAll();
     }
 
-    @Bean
+/*    @Bean
     @Override
     public UserDetailsService userDetailsService() {
         UserDetails user =

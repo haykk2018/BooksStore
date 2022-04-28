@@ -19,12 +19,17 @@ import java.util.Map;
 @Controller // This means that this class is a Controller
 @RequestMapping(path = "/book-panel") // This means URL's start with /demo (after Application path)
 public class AdminBookController {
-    @Autowired
+    //@Autowired
     private BookRepository bookRepository;
 
-    @Autowired
+    //@Autowired
     private AuthorRepository authorRepository;
 
+    //alternative and recommended way without the @Autowired annotation
+    public AdminBookController(BookRepository bookRepository, AuthorRepository authorRepository) {
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
+    }
     @GetMapping(path = "/main")
     public String mainBookAdmin(Map<String, Object> model) {
 

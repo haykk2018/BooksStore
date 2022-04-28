@@ -25,7 +25,8 @@ public class AdminBookController {
     //@Autowired
     private AuthorRepository authorRepository;
 
-    //alternative and recommended way without the @Autowired annotation
+    //alternative and recommended way instead set @Autowired annotation in fields set into constructor.
+    //After Spring 4.3 If your class has only single constructor then there is no need to put @Autowired.
     public AdminBookController(BookRepository bookRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
